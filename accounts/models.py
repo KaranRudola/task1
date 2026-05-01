@@ -46,3 +46,5 @@ class SysComponent(models.Model):
 
     class Meta:
         db_table = 'SYS_COMPONENT'
+
+# Task 2 Final Push
