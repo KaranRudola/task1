@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils import timezone
-from .models import SysUser
+from .models import SysUser, SysModule # Naya import add kiya
 
+# Register aur Login view (Task-1 wala) same rahega
 def register(request):
     if request.method == 'POST':
         employee_number = request.POST.get('employee_number')
@@ -40,8 +41,15 @@ def login_view(request):
             
     return render(request, 'login.html')
 
+# Task-2: Dashboard Updated logic
 def dashboard(request):
     if 'user_id' not in request.session:
         return redirect('login')
     
-    return render(request, 'dashboard.html', {'name': request.session.get('full_name')})
+    # Database se Master Modules fetch karna
+    master_modules = SysModule.objects.filter(parent_module__isnull=True)
+    
+    return render(request, 'dashboard.html', {
+        'name': request.session.get('full_name'),
+        'master_modules': master_modules # Dynamic data pass kiya
+    })
