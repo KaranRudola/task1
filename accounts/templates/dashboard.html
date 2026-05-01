@@ -1,5 +1,28 @@
-<h2>Dashboard</h2>
-<h1>Welcome, {{ name }}!</h1>
-<p>You have successfully logged into the Oracle-Django Portal.</p>
-<hr>
-<a href="/login/">Logout</a>
+<div class="sidebar">
+    <h3>Navigation Menu</h3>
+    
+    {% for module in master_modules %}
+        <div class="module-section" style="margin-top: 15px;">
+            <strong style="color: blue;">{{ module.module_name }}</strong>
+            
+            <ul style="list-style-type: none;">
+                {% for sub in module.submodules.all %}
+                    <li style="margin-left: 15px; font-weight: bold;">
+                        {{ sub.module_name }}
+                        
+                        <ul style="list-style-type: circle;">
+                            {% for comp in sub.components.all %}
+                                <li style="margin-left: 20px; font-weight: normal;">
+                                    <a href="{{ comp.url_path }}">{{ comp.component_name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No navigation data found in database.</p>
+    {% endfor %}
+</div>
